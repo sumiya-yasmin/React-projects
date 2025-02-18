@@ -1,0 +1,31 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+  }
+body h1{
+    text-align: center;
+    text-transform: uppercase;
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+  .project {
+    margin-bottom: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  .project h2 {
+    margin: 0;
+  }
+  .project a {
+    color: #0366d6;
+    text-decoration: none;
+  }
+  .project a:hover {
+    text-decoration: underline;
+  }
+  #project-list{
+      display: grid;
+      grid-template-columns: auto auto;
+      justify-content: space-evenly;
+  }
