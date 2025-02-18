@@ -69,7 +69,6 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./deployments/${{ matrix.project }}
-          destination_dir: ${{ matrix.project }}
           publish_branch: gh-pages
 
   deploy-index:
