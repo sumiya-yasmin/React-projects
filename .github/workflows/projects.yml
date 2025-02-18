@@ -18,27 +18,34 @@ jobs:
           - 'Number Table'
           - 'Render Products'
     permissions:
-        contents: write
+      contents: write
     concurrency:
-        group: 'pages-deployment'
-        cancel-in-progress: true
+      group: 'pages-deployment-${{ matrix.project }}'
+      cancel-in-progress: true
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Verify package-lock.json
+        run: |
+          if [ ! -f ./${{ matrix.project }}/package-lock.json ]; then
+            echo "package-lock.json not found in ${{ matrix.project }}"
+            exit 1
+          fi
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20.x'
           cache: 'npm'
-          cache-dependency-path: ./${{ matrix.project }}/package-lock.json 
+          cache-dependency-path: ./${{ matrix.project }}/package-lock.json
         env:
-         CACHE_BUST: ${{ github.run_number }} 
+          CACHE_BUST: ${{ github.run_number }}-${{ matrix.project }}
 
       - name: Install dependencies and build all projects
         run: |
-          mkdir -p ./deployments  # Create a folder to store all built projects
+          mkdir -p ./deployments
           for project in "Counter App" "Grade Calculator" "Number Comparator App" "Multiplication Table" "Number Table" "Render Products"; do
             if [ -d "$project" ]; then
               echo "Building $project..."
@@ -46,32 +53,42 @@ jobs:
               npm install
               npm run build
               mkdir -p "../deployments/$project"
-              cp -r dist/* "../deployments/$project/"  # Copy build to deployments/
+              cp -r dist/* "../deployments/$project/"
               cd ..
             else
               echo "Skipping $project (not found)"
             fi
           done
 
+      - name: Verify Build Output
+        run: |
+          ls -R ./deployments
+
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./deployments/  
+          publish_dir: ./deployments/${{ matrix.project }}
+          destination_dir: ${{ matrix.project }}
           publish_branch: gh-pages
 
   deploy-index:
-        runs-on: ubuntu-latest
-        needs: deploy
-        permissions:
-         contents: write
-        steps:
-        - name: Checkout repository
-          uses: actions/checkout@v4
+    runs-on: ubuntu-latest
+    needs: deploy
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-        - name: Deploy Index Page
-          uses: peaceiris/actions-gh-pages@v4
-          with:
-            github_token: ${{ secrets.GITHUB_TOKEN }}
-            publish_dir: ./
-            publish_branch: gh-pages
+      - name: Build Index Page
+        run: |
+          mkdir -p ./index-page
+          echo "<html><body><h1>Welcome to My Projects</h1><ul><li><a href='Counter App'>Counter App</a></li><li><a href='Grade Calculator'>Grade Calculator</a></li></ul></body></html>" > ./index-page/index.html
+
+      - name: Deploy Index Page
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./index-page
+          publish_branch: gh-pages
