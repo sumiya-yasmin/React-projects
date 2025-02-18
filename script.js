@@ -22,7 +22,7 @@ const projects = [
     projectDescription.innerHTML = `<strong>Description:</strong> ${project.description}`;
   
     const projectLink = document.createElement('p');
-    projectLink.innerHTML = `<strong>Live Demo:</strong> <a href="https://username.github.io/React-projects/${project.name.replace(/ /g, '-')}" target="_blank">View ${project.name}</a>`;
+    projectLink.innerHTML = `<strong>Live Demo:</strong> <a href="https://username.github.io/React-projects/${project.name.replace(/ /g, '-')}/" target="_blank">View ${project.name}</a>`;
   
     projectCard.appendChild(projectName);
     projectCard.appendChild(projectDescription);
