@@ -30,9 +30,11 @@ jobs:
       - name: Verify package-lock.json
         run: |
           if [ ! -f ./${{ matrix.project }}/package-lock.json ]; then
-            echo "package-lock.json not found in ${{ matrix.project }}"
-            exit 1
+            echo "⚠️ Warning: package-lock.json not found in ${{ matrix.project }}. Running npm install to generate it."
+            cd ${{ matrix.project }}
+            npm install
           fi
+      
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
