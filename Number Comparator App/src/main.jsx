@@ -12,7 +12,7 @@ import Setting from './Pages/Setting.jsx'
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <ThemeProvider>
-    <BrowserRouter>
+    <BrowserRouter basename="/React-projects/number-comparator-app/">
     <Routes>
       <Route path='/' element={ <Layout/>}>
       <Route path='/' element={<App/>} />
