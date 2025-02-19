@@ -11,12 +11,12 @@ jobs:
     strategy:
       matrix:
         project: 
-          - 'Counter-App'
-          - 'Grade-Calculator'
-          - 'Number-Comparator App'
-          - 'Multiplication-Table'
-          - 'Number-Table'
-          - 'Render-Products'
+          - 'Counter App'
+          - 'Grade Calculator'
+          - 'Number Comparator App'
+          - 'Multiplication Table'
+          - 'Number Table'
+          - 'Render Products'
     permissions:
       contents: write
     concurrency:
