@@ -63,6 +63,5 @@ To run any of these projects locally, follow these steps:
 ## 🛠 Tech Stack
 React ⚛️ – Frontend framework
 Vite ⚡ – Fast build tool
-Material-UI (MUI) 🎨 – UI styling
 Tailwind CSS 🌊 – Utility-first CSS framework
 
