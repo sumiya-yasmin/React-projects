@@ -34,7 +34,6 @@ jobs:
             cd ${{ matrix.project }}
             npm install
           fi
-      
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -45,22 +44,13 @@ jobs:
         env:
           CACHE_BUST: ${{ github.run_number }}-${{ matrix.project }}
 
-      - name: Install dependencies and build all projects
+      - name: Install dependencies and build project
         run: |
-          mkdir -p ./deployments
-          for project in "Counter App" "Grade Calculator" "Number Comparator App" "Multiplication Table" "Number Table" "Render Products"; do
-            if [ -d "$project" ]; then
-              echo "Building $project..."
-              cd "$project"
-              npm install
-              npm run build
-              mkdir -p "../deployments/$project"
-              cp -r dist/* "../deployments/$project/"
-              cd ..
-            else
-              echo "Skipping $project (not found)"
-            fi
-          done
+          cd "${{ matrix.project }}"
+          npm install
+          npm run build
+          mkdir -p "../deployments/${{ matrix.project }}"
+          cp -r dist/* "../deployments/${{ matrix.project }}/"
 
       - name: Verify Build Output
         run: |
@@ -71,6 +61,7 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./deployments/${{ matrix.project }}
+          destination_dir: ${{ matrix.project }} # Ensure this matches the folder name
           publish_branch: gh-pages
 
   deploy-index:
@@ -85,7 +76,7 @@ jobs:
       - name: Build Index Page
         run: |
           mkdir -p ./index-page
-          echo "<html><body><h1>Welcome to My Projects</h1><ul><li><a href='Counter App'>Counter App</a></li><li><a href='Grade Calculator'>Grade Calculator</a></li></ul></body></html>" > ./index-page/index.html
+          echo "<html><body><h1>Welcome to My Projects</h1><ul><li><a href='Counter-App'>Counter App</a></li><li><a href='Grade-Calculator'>Grade Calculator</a></li></ul></body></html>" > ./index-page/index.html
 
       - name: Deploy Index Page
         uses: peaceiris/actions-gh-pages@v4
