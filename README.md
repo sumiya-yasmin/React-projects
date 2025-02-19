@@ -1,6 +1,6 @@
 # React Projects Collection
 
-This repository contains multiple **React-based projects**, each demonstrating different concepts and functionalities. The projects are deployed using **GitHub Pages** for easy access.
+This repository contains multiple **React-based projects**, each demonstrating different concepts and functionalities. 
 
 
 ---
